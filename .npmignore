@@ -1,3 +1,4 @@
 src/
+npm-scripts/
 tsconfig.json
 .npmignore
