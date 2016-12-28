@@ -16,5 +16,4 @@ let i = new Image();
 i.src = './src/background.png';
 coverWithImage(i, 300, 300, image => {
     document.body.appendChild(image);
-}, 'end')
-
+}, 'center');

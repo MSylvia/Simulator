@@ -1338,6 +1338,6 @@ var i = new Image();
 i.src = './src/background.png';
 Simulator_1.coverWithImage(i, 300, 300, function (image) {
     document.body.appendChild(image);
-}, 'end');
+}, 'center');
 
 },{"./NightSky/nightSky":1,"./Simulator":6}]},{},[10]);
