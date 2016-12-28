@@ -20,6 +20,9 @@ class NightSky extends World{
     constructor(ctx){
         // Initiate the super class by passing the rendering context (you can forget about it now 🎉) and width and height of the canvas (optional)
         super(ctx, 400, 300);
+
+        // Set background color
+        super.setBackgroundColor('black');
     }
 }
 
@@ -45,7 +48,7 @@ Here we create an object with the name of `Bird`.
 // Import the Actor class from the library
 import {Actor} from 'canvas-simulator';
 
-export class Bird extends Actor{
+class Bird extends Actor{
     constructor(){
         // Initiate the super class
         super();
@@ -76,6 +79,7 @@ class NightSky extends World{
 
     constructor(ctx){
         super(ctx, 400, 300);
+        super.setBackgroundColor('black');
 
         // Initiate new instance of Bird
         let bird = new Bird();
@@ -96,7 +100,7 @@ The whole script, after combinig the imports properly, would look something like
 import {Actor, World} from 'canvas-simulator';
 
 // Bird class
-export class Bird extends Actor{
+class Bird extends Actor{
     constructor(){
         super();
         this.setupImage();
@@ -114,6 +118,7 @@ class NightSky extends World{
 
     constructor(ctx){
         super(ctx, 400, 300);
+        super.setBackgroundColor('black');
         let bird = new Bird();
         super.addToWorld(bird, 50, 50);
     }
@@ -124,3 +129,30 @@ let ctx = document.getElementById('canvas').getContext('2d');
 let sky = new NightSky(ctx);
 
 ```
+
+
+## Animating!
+
+To make the bird move each actor can implement a method which is called `animate` (must be `public`).
+We can make our bird fly over the screen like this
+
+```javascript
+class Bird extends Actor{
+    constructor(){
+        super();
+        this.setupImage();
+    }
+
+    public animate(){
+        super.setX(super.getX() + 1);
+    }
+
+     private setupImage(){
+        let url = 'https://cdn.pixabay.com/photo/2014/04/02/17/03/bird-307767_640.png';
+        super.setImageSrc(url);
+        super.scaleImageProportionateToWidth(50);
+    }
+}
+```
+
+Now the bird moves quite slowly to the right of the screen.
