@@ -1,10 +1,12 @@
 {
-  "name": "christmas",
+  "name": "canvas-simulator",
   "version": "1.0.0",
   "description": "",
-  "main": "build.js",
+  "main": "./dist/index.js",
+  "types": "./dist/@types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node npm-scripts/dev.js",
     "build": "node build.js"
   },
   "author": "",
