@@ -67,11 +67,8 @@ class Bird extends Actor{
 
      private setupImage(){
         // Set image
-        let url = 'https://cdn.pixabay.com/photo/2014/04/02/17/03/bird-307767_640.png';
+        let url = 'https://api.tim-specht.com/data/simulator/tutorial/bird.png';
         super.setImageSrc(url);
-
-        // Scale image while maintaining aspect ratio to 50px width
-        super.scaleImageProportionateToWidth(50);
     }
 }
 
@@ -115,9 +112,8 @@ class Bird extends Actor{
     }
 
      private setupImage(){
-        let url = 'https://cdn.pixabay.com/photo/2014/04/02/17/03/bird-307767_640.png';
+        let url = 'https://api.tim-specht.com/data/simulator/tutorial/bird.png';
         super.setImageSrc(url);
-        super.scaleImageProportionateToWidth(50);
     }
 }
 
@@ -156,9 +152,8 @@ class Bird extends Actor{
     }
 
     private setupImage(){
-        let url = 'https://cdn.pixabay.com/photo/2014/04/02/17/03/bird-307767_640.png';
+        let url = 'https://api.tim-specht.com/data/simulator/tutorial/bird.png';
         super.setImageSrc(url);
-        super.scaleImageProportionateToWidth(50);
     }
 }
 ```
