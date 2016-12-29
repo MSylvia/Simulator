@@ -1,6 +1,11 @@
 import { Actor } from './actor';
 
-export class World {
+
+/**
+ * The World class is used to create a container for all the objects (Actors) in it.
+ * You can use it by creating a subclass which inherits from the World class.
+ */
+export abstract class World {
 
     private actors: {
         className: string,
@@ -8,7 +13,7 @@ export class World {
     }[] = [];
     private renderingOrder: string[] = [];
     private sendMouseDownTo: Actor[] = [];
-    private bithtime: number;
+    private birthtime: number;
 
     private savedSize = {
         width: 600,
@@ -25,7 +30,7 @@ export class World {
         y: 0
     }
 
-    private registerdIntervals: {
+    private registeredIntervals: {
         id: number,
         function: Function,
         i: number,
@@ -34,6 +39,9 @@ export class World {
 
     private animationShouldRun = true;
 
+    /**
+     * Create a new World by passing the CanvasRenderingContext2D and optionally width and height of the world.
+     */
     constructor(private context: CanvasRenderingContext2D, private width = 600, private height = 400) {
 
 
@@ -41,7 +49,7 @@ export class World {
         this.setSize(width, height);
         this.render();
 
-        this.bithtime = new Date().getTime();
+        this.birthtime = new Date().getTime();
 
         //Listen to Visibility
 
@@ -117,7 +125,7 @@ export class World {
      */
     public registerInterval(f: Function, i: number) {
         let id = setInterval(f, i);
-        this.registerdIntervals.push({
+        this.registeredIntervals.push({
             id: id,
             i: i,
             function: f,
@@ -131,9 +139,9 @@ export class World {
      * Remove interval which has been registered through registerInterval method
      */
     public unregisterInterval(id: number) {
-        let index = this.registerdIntervals.indexOf(this.registerdIntervals.filter(i => i.id == id)[0]);
-        clearInterval(this.registerdIntervals[index].id);
-        this.registerdIntervals.splice(index, 1);
+        let index = this.registeredIntervals.indexOf(this.registeredIntervals.filter(i => i.id == id)[0]);
+        clearInterval(this.registeredIntervals[index].id);
+        this.registeredIntervals.splice(index, 1);
     }
 
 
@@ -141,7 +149,7 @@ export class World {
      * Pause all active intervals which were registered through registerInterval method
      */
     public pauseAllIntervals() {
-        this.registerdIntervals.filter(i => i.active).forEach(i => {
+        this.registeredIntervals.filter(i => i.active).forEach(i => {
             clearInterval(i.id);
             i.active = false;
         })
@@ -151,7 +159,7 @@ export class World {
      * Start all paused intervals which were registered through registerInterval method
      */
     public startAllIntervals() {
-        this.registerdIntervals.filter(i => !i.active).forEach(i => {
+        this.registeredIntervals.filter(i => !i.active).forEach(i => {
             i.id = setInterval(i.function, i.i);
             i.active = true;
         })
@@ -179,7 +187,7 @@ export class World {
      * Get current lifetime of world in milliseconds
      */
     public getLifetime() {
-        return new Date().getTime() - this.bithtime;
+        return new Date().getTime() - this.birthtime;
     }
 
     /**
@@ -238,7 +246,7 @@ export class World {
 
     /**
      * Adds the actor to the world at location x and y. 
-     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world
+     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world.
      */
     public addToWorld(actor: Actor, x = 0, y = 0, percent = false) {
 
@@ -380,7 +388,7 @@ export class World {
         renderingLists.push(toRender);
 
 
-        // Go through the list backward, animate and render. The thing last renderd is display first
+        // Go through the list backward, animate and render. The thing last rendered is display first
         for (let i = renderingLists.length - 1; i >= 0; i--) {
             for (let actor of renderingLists[i]) {
                 if (this.hasFunction(actor.obj, 'animate')) actor.obj.animate();
@@ -402,8 +410,8 @@ export class World {
 
 
     /**
-     * Sets the order on class level in which the actor should be renderd.
-     * E.g. first class specified will be rendered on top of all others
+     * Sets the order on class level in which the actor should be rendered.
+     * E.g. first class specified will be rendered on top of all others.
      */
     public setRenderingOrder(...order) {
         this.renderingOrder = order;

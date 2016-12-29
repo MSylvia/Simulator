@@ -1,5 +1,12 @@
 "use strict";
+/**
+ * The World class is used to create a container for all the objects (Actors) in it.
+ * You can use it by creating a subclass which inherits from the World class.
+ */
 var World = (function () {
+    /**
+     * Create a new World by passing the CanvasRenderingContext2D and optionally width and height of the world.
+     */
     function World(context, width, height) {
         if (width === void 0) { width = 600; }
         if (height === void 0) { height = 400; }
@@ -22,12 +29,12 @@ var World = (function () {
             x: 0,
             y: 0
         };
-        this.registerdIntervals = [];
+        this.registeredIntervals = [];
         this.animationShouldRun = true;
         var canvas = this.context.canvas;
         this.setSize(width, height);
         this.render();
-        this.bithtime = new Date().getTime();
+        this.birthtime = new Date().getTime();
         //Listen to Visibility
         document.addEventListener("visibilitychange", function () {
             var state = document.visibilityState;
@@ -95,7 +102,7 @@ var World = (function () {
      */
     World.prototype.registerInterval = function (f, i) {
         var id = setInterval(f, i);
-        this.registerdIntervals.push({
+        this.registeredIntervals.push({
             id: id,
             i: i,
             function: f,
@@ -107,15 +114,15 @@ var World = (function () {
      * Remove interval which has been registered through registerInterval method
      */
     World.prototype.unregisterInterval = function (id) {
-        var index = this.registerdIntervals.indexOf(this.registerdIntervals.filter(function (i) { return i.id == id; })[0]);
-        clearInterval(this.registerdIntervals[index].id);
-        this.registerdIntervals.splice(index, 1);
+        var index = this.registeredIntervals.indexOf(this.registeredIntervals.filter(function (i) { return i.id == id; })[0]);
+        clearInterval(this.registeredIntervals[index].id);
+        this.registeredIntervals.splice(index, 1);
     };
     /**
      * Pause all active intervals which were registered through registerInterval method
      */
     World.prototype.pauseAllIntervals = function () {
-        this.registerdIntervals.filter(function (i) { return i.active; }).forEach(function (i) {
+        this.registeredIntervals.filter(function (i) { return i.active; }).forEach(function (i) {
             clearInterval(i.id);
             i.active = false;
         });
@@ -124,7 +131,7 @@ var World = (function () {
      * Start all paused intervals which were registered through registerInterval method
      */
     World.prototype.startAllIntervals = function () {
-        this.registerdIntervals.filter(function (i) { return !i.active; }).forEach(function (i) {
+        this.registeredIntervals.filter(function (i) { return !i.active; }).forEach(function (i) {
             i.id = setInterval(i.function, i.i);
             i.active = true;
         });
@@ -148,7 +155,7 @@ var World = (function () {
      * Get current lifetime of world in milliseconds
      */
     World.prototype.getLifetime = function () {
-        return new Date().getTime() - this.bithtime;
+        return new Date().getTime() - this.birthtime;
     };
     /**
      * Enter fullscreen mode on canvas element
@@ -202,7 +209,7 @@ var World = (function () {
     };
     /**
      * Adds the actor to the world at location x and y.
-     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world
+     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world.
      */
     World.prototype.addToWorld = function (actor, x, y, percent) {
         if (x === void 0) { x = 0; }
@@ -325,7 +332,7 @@ var World = (function () {
         }
         // Add rest
         renderingLists.push(toRender);
-        // Go through the list backward, animate and render. The thing last renderd is display first
+        // Go through the list backward, animate and render. The thing last rendered is display first
         for (var i = renderingLists.length - 1; i >= 0; i--) {
             for (var _b = 0, _c = renderingLists[i]; _b < _c.length; _b++) {
                 var actor = _c[_b];
@@ -342,13 +349,13 @@ var World = (function () {
         });
     };
     /**
-     * Sets the order on class level in which the actor should be renderd.
-     * E.g. first class specified will be rendered on top of all others
+     * Sets the order on class level in which the actor should be rendered.
+     * E.g. first class specified will be rendered on top of all others.
      */
     World.prototype.setRenderingOrder = function () {
         var order = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            order[_i - 0] = arguments[_i];
+            order[_i] = arguments[_i];
         }
         this.renderingOrder = order;
     };

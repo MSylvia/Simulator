@@ -150,6 +150,9 @@ exports.colorNames = {
     "yellowgreen": "#9acd32"
 };
 var lib_1 = require("./lib");
+/**
+ * Class for working with color
+ */
 var Color = (function () {
     function Color(color) {
         this.reg = {
@@ -162,34 +165,34 @@ var Color = (function () {
     }
     Color.prototype.parse = function (color) {
         if (this.reg.rgb.test(color)) {
-            var compontents = color.match(this.reg.rgb).slice(1, 4).map(function (c) { return parseFloat(c); });
+            var components = color.match(this.reg.rgb).slice(1, 4).map(function (c) { return parseFloat(c); });
             ;
-            this.r = compontents[0];
-            this.g = compontents[1];
-            this.b = compontents[2];
+            this.r = components[0];
+            this.g = components[1];
+            this.b = components[2];
             this.a = 1;
         }
         else if (this.reg.rgba.test(color)) {
-            var compontents = color.match(this.reg.rgba).slice(1, 5).map(function (c) { return parseFloat(c); });
-            this.r = compontents[0];
-            this.g = compontents[1];
-            this.b = compontents[2];
-            this.a = compontents[3];
+            var components = color.match(this.reg.rgba).slice(1, 5).map(function (c) { return parseFloat(c); });
+            this.r = components[0];
+            this.g = components[1];
+            this.b = components[2];
+            this.a = components[3];
         }
         else if (this.reg.hex.test(color)) {
             var hexString = color.match(this.reg.hex)[1];
-            var compontents = this.hexColorToRGB(hexString);
-            this.r = compontents.r;
-            this.g = compontents.g;
-            this.b = compontents.b;
+            var components = this.hexColorToRGB(hexString);
+            this.r = components.r;
+            this.g = components.g;
+            this.b = components.b;
             this.a = 1;
         }
         else if (exports.colorNames[color.toLowerCase()] != undefined) {
             var hexString = exports.colorNames[color.toLowerCase()];
-            var compontents = this.hexColorToRGB(hexString);
-            this.r = compontents.r;
-            this.g = compontents.g;
-            this.b = compontents.b;
+            var components = this.hexColorToRGB(hexString);
+            this.r = components.r;
+            this.g = components.g;
+            this.b = components.b;
             this.a = 1;
         }
         else {
@@ -242,11 +245,11 @@ var Color = (function () {
     Color.prototype.hexColorToRGB = function (color) {
         var _this = this;
         color = color.replace('#', '');
-        var compontents = [];
+        var components = [];
         for (var p = 0; p < color.length; p += 2) {
-            compontents.push(color.slice(p, p + 2));
+            components.push(color.slice(p, p + 2));
         }
-        var decComponents = compontents.map(function (c) { return _this.hexToDec(c); });
+        var decComponents = components.map(function (c) { return _this.hexToDec(c); });
         return {
             r: decComponents[0],
             g: decComponents[1],

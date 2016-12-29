@@ -65,7 +65,7 @@ function toDegrees(radians) {
 }
 exports.toDegrees = toDegrees;
 /**
- * Scales the image to a given width while maintainig the aspect ratio.
+ * Scales the image to a given width while maintaining the aspect ratio.
  * The callback passes back the scaled image
  */
 function scaleImageProportionateToWidth(image, width, callback) {
@@ -78,8 +78,8 @@ function scaleImageProportionateToWidth(image, width, callback) {
 }
 exports.scaleImageProportionateToWidth = scaleImageProportionateToWidth;
 /**
- * Scales the image to a given height while maintainig the aspect ratio.
- * The callback passes back the scaled image
+ * Scales the image to a given height while maintaining the aspect ratio.
+ * The callback passes back the scaled image.
  */
 function scaleImageProportionateToHeight(image, height, callback) {
     image.onload = function () {
@@ -91,6 +91,11 @@ function scaleImageProportionateToHeight(image, height, callback) {
 }
 exports.scaleImageProportionateToHeight = scaleImageProportionateToHeight;
 var canvasImage_1 = require("./canvasImage");
+/**
+ * Scales the image to cover a given width and height while maintaining the aspect ratio.
+ * The callback passes back the scaled image.
+ * You can set the position of the image in the container by setting the optional pos parameter after the callback to start, center or end.
+ */
 function coverWithImage(image, tWidth, tHeight, callback, pos) {
     if (pos === void 0) { pos = 'center'; }
     image.onload = function () {

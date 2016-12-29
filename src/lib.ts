@@ -58,7 +58,7 @@ export function toDegrees(radians: number) {
 }
 
 /**
- * Scales the image to a given width while maintainig the aspect ratio.
+ * Scales the image to a given width while maintaining the aspect ratio.
  * The callback passes back the scaled image
  */
 export function scaleImageProportionateToWidth(image: HTMLImageElement, width: number, callback: Function) {
@@ -71,8 +71,8 @@ export function scaleImageProportionateToWidth(image: HTMLImageElement, width: n
 }
 
 /**
- * Scales the image to a given height while maintainig the aspect ratio.
- * The callback passes back the scaled image
+ * Scales the image to a given height while maintaining the aspect ratio.
+ * The callback passes back the scaled image.
  */
 export function scaleImageProportionateToHeight(image: HTMLImageElement, height: number, callback: Function) {
 
@@ -87,6 +87,11 @@ export function scaleImageProportionateToHeight(image: HTMLImageElement, height:
 import { CanvasImage } from './canvasImage';
 
 
+/**
+ * Scales the image to cover a given width and height while maintaining the aspect ratio. 
+ * The callback passes back the scaled image.
+ * You can set the position of the image in the container by setting the optional pos parameter after the callback to start, center or end.
+ */
 export function coverWithImage(image: HTMLImageElement, tWidth: number, tHeight: number, callback: Function, pos = 'center') {
 
     image.onload = () => {

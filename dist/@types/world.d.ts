@@ -1,20 +1,27 @@
 import { Actor } from './actor';
-export declare class World {
+/**
+ * The World class is used to create a container for all the objects (Actors) in it.
+ * You can use it by creating a subclass which inherits from the World class.
+ */
+export declare abstract class World {
     private context;
     private width;
     private height;
     private actors;
     private renderingOrder;
     private sendMouseDownTo;
-    private bithtime;
+    private birthtime;
     private savedSize;
     private devicePixelRatio;
     bgColor: string;
     private useImage;
     private bgImage;
     private bgPos;
-    private registerdIntervals;
+    private registeredIntervals;
     private animationShouldRun;
+    /**
+     * Create a new World by passing the CanvasRenderingContext2D and optionally width and height of the world.
+     */
     constructor(context: CanvasRenderingContext2D, width?: number, height?: number);
     /**
     * Get the class name of the world
@@ -75,7 +82,7 @@ export declare class World {
     setSize(width: number, height: number): void;
     /**
      * Adds the actor to the world at location x and y.
-     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world
+     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world.
      */
     addToWorld(actor: Actor, x?: number, y?: number, percent?: boolean): void;
     /**
@@ -119,8 +126,8 @@ export declare class World {
      */
     private render();
     /**
-     * Sets the order on class level in which the actor should be renderd.
-     * E.g. first class specified will be rendered on top of all others
+     * Sets the order on class level in which the actor should be rendered.
+     * E.g. first class specified will be rendered on top of all others.
      */
     setRenderingOrder(...order: any[]): void;
     /**

@@ -3,7 +3,7 @@ import { World } from './world';
 
 export interface Animate {
     /**
-    * This class can be overwritten by the class inheriting from the actor class to animate, which means to change properties of the actor, before the rendering method is called internally
+    * This method can be overwritten by the class inheriting from the actor class to animate, which means to change properties of the actor, before the rendering method is called internally
     */
     animate(): void
 }
@@ -11,18 +11,30 @@ export interface Animate {
 export interface InteractionEvent {
 
     /**
-     * This class can be overwritten by the class inheriting from the actor class to react to mouse events
+     * This method can be overwritten by the class inheriting from the actor class to react to mouse events
      */
     interactionEvent(e: MouseEvent): void
 }
 
 export interface Dragging {
     /**
-    * This class can be overwritten by the class inheriting from the actor class to react to dragging on the actor
+    * This method can be overwritten by the class inheriting from the actor class to react to dragging on the actor
     */
     dragging(x: number, y: number): void
 }
 
+export interface AddedToWorld {
+    /**
+    * This method can be overwritten by the class inheriting from the actor class to react to dragging on the actor
+    */
+    addedToWorld(world: World): void
+}
+
+
+/**
+ * The Actor class represents the objects which are contained in an instance of a subclass of the World class.
+ * You can create a new Actor by creating a new subclass which inherits from the Actor class.
+ */
 export abstract class Actor {
     private ctx: CanvasRenderingContext2D;
     private devicePixelRatio = window.devicePixelRatio || 1;
@@ -38,8 +50,14 @@ export abstract class Actor {
     private world: World;
     private birthtime: number;
 
-    constructor() {
+    /**
+     * Create a new Actor.
+     * You can optionally pass the path to an image which will be used by the Actor or you may set it later with the _setImageSrc_ method.
+     */
+    constructor(imageSrc?: string) {
         this.birthtime = new Date().getTime();
+
+        if(imageSrc) this.setImageSrc(imageSrc)
     }
 
     /**
@@ -53,14 +71,14 @@ export abstract class Actor {
     // @Overwrite
 
     /**
-     * This class can be overwritten by the class inheriting from the actor class to have a callback once the actor has been added to the world
+     * This method can be overwritten by the class inheriting from the actor class to have a callback once the actor has been added to the world
      */
     public addedToWorld(world: World) {
 
     }
 
     /**
-     * This class can be overwritten by the class inheriting from the actor class to animate, which means to change properties of the actor, before the rendering method is called internally
+     * This method can be overwritten by the class inheriting from the actor class to animate, which means to change properties of the actor, before the rendering method is called internally
      */
     public animate() {
 
@@ -71,14 +89,14 @@ export abstract class Actor {
     //Mouse
 
     /**
-     * This class can be overwritten by the class inheriting from the actor class to react to mouse events
+     * This method can be overwritten by the class inheriting from the actor class to react to mouse events
      */
     public interactionEvent(e: MouseEvent) {
 
     }
 
     /**
-     * This class can be overwritten by the class inheriting from the actor class to react to dragging on the actor
+     * This method can be overwritten by the class inheriting from the actor class to react to dragging on the actor
      */
     public dragging(x: number, y: number) {
 
@@ -95,7 +113,7 @@ export abstract class Actor {
     }
 
     /**
-     * Mouse/Draggig helper funcition for pixelperfect draggig
+     * Mouse/Dragging helper function for pixel-perfect dragging
      **/
     public getClickCoordinatesRelativeToActor(clickX: number, clickY: number) {
         let cX = clickX,
@@ -162,7 +180,7 @@ export abstract class Actor {
     }
 
     /**
-     * Set the y position of the actor realtive to the world
+     * Set the y position of the actor relative to the world
      */
     public setY(y: number, percent = false, originAtCenter = false) {
         if (percent) {
@@ -270,7 +288,7 @@ export abstract class Actor {
     }
 
     /**
-     * This method is used in setup by the world class to pass a refrence to itself to the actor which can later be accessed by the getWorld() method
+     * This method is used in setup by the world class to pass a reference to itself to the actor which can later be accessed by the getWorld() method
      */
     public setWorld(world: World) {
         this.world = world;
@@ -302,7 +320,7 @@ export abstract class Actor {
     }
 
     /**
-     * Scales the image of the actor to a specifed width while maintaining proportion
+     * Scales the image of the actor to a specified width while maintaining proportion
      */
     public scaleImageProportionateToWidth(width: number) {
         let image = this.image;
@@ -315,7 +333,7 @@ export abstract class Actor {
     }
 
     /**
-     * Scales the image of the actor to a specifed height while maintaining proportion
+     * Scales the image of the actor to a specified height while maintaining proportion
      */
     public scaleImageProportionateToHeight(height: number) {
         let image = this.image;

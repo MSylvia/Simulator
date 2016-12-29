@@ -23,15 +23,20 @@ export declare function toRadians(degrees: number): number;
  */
 export declare function toDegrees(radians: number): number;
 /**
- * Scales the image to a given width while maintainig the aspect ratio.
+ * Scales the image to a given width while maintaining the aspect ratio.
  * The callback passes back the scaled image
  */
 export declare function scaleImageProportionateToWidth(image: HTMLImageElement, width: number, callback: Function): void;
 /**
- * Scales the image to a given height while maintainig the aspect ratio.
- * The callback passes back the scaled image
+ * Scales the image to a given height while maintaining the aspect ratio.
+ * The callback passes back the scaled image.
  */
 export declare function scaleImageProportionateToHeight(image: HTMLImageElement, height: number, callback: Function): void;
+/**
+ * Scales the image to cover a given width and height while maintaining the aspect ratio.
+ * The callback passes back the scaled image.
+ * You can set the position of the image in the container by setting the optional pos parameter after the callback to start, center or end.
+ */
 export declare function coverWithImage(image: HTMLImageElement, tWidth: number, tHeight: number, callback: Function, pos?: string): void;
 /**
  * Repeat the function i times.

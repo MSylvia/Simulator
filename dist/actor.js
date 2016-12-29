@@ -1,6 +1,14 @@
 "use strict";
+/**
+ * The Actor class represents the objects which are contained in an instance of a subclass of the World class.
+ * You can create a new Actor by creating a new subclass which inherits from the Actor class.
+ */
 var Actor = (function () {
-    function Actor() {
+    /**
+     * Create a new Actor.
+     * You can optionally pass the path to an image which will be used by the Actor or you may set it later with the _setImageSrc_ method.
+     */
+    function Actor(imageSrc) {
         this.devicePixelRatio = window.devicePixelRatio || 1;
         this.image = new Image();
         this.opacity = 1;
@@ -9,6 +17,8 @@ var Actor = (function () {
         this.rotation = 0;
         this.isBeingDragged = false;
         this.birthtime = new Date().getTime();
+        if (imageSrc)
+            this.setImageSrc(imageSrc);
     }
     /**
      * Get the class name of the actor
@@ -18,23 +28,23 @@ var Actor = (function () {
     };
     // @Overwrite
     /**
-     * This class can be overwritten by the class inheriting from the actor class to have a callback once the actor has been added to the world
+     * This method can be overwritten by the class inheriting from the actor class to have a callback once the actor has been added to the world
      */
     Actor.prototype.addedToWorld = function (world) {
     };
     /**
-     * This class can be overwritten by the class inheriting from the actor class to animate, which means to change properties of the actor, before the rendering method is called internally
+     * This method can be overwritten by the class inheriting from the actor class to animate, which means to change properties of the actor, before the rendering method is called internally
      */
     Actor.prototype.animate = function () {
     };
     //Mouse
     /**
-     * This class can be overwritten by the class inheriting from the actor class to react to mouse events
+     * This method can be overwritten by the class inheriting from the actor class to react to mouse events
      */
     Actor.prototype.interactionEvent = function (e) {
     };
     /**
-     * This class can be overwritten by the class inheriting from the actor class to react to dragging on the actor
+     * This method can be overwritten by the class inheriting from the actor class to react to dragging on the actor
      */
     Actor.prototype.dragging = function (x, y) {
     };
@@ -46,7 +56,7 @@ var Actor = (function () {
         return new Date().getTime() - this.birthtime;
     };
     /**
-     * Mouse/Draggig helper funcition for pixelperfect draggig
+     * Mouse/Dragging helper function for pixel-perfect dragging
      **/
     Actor.prototype.getClickCoordinatesRelativeToActor = function (clickX, clickY) {
         var cX = clickX, cY = clickY;
@@ -101,7 +111,7 @@ var Actor = (function () {
         return this.y;
     };
     /**
-     * Set the y position of the actor realtive to the world
+     * Set the y position of the actor relative to the world
      */
     Actor.prototype.setY = function (y, percent, originAtCenter) {
         if (percent === void 0) { percent = false; }
@@ -192,7 +202,7 @@ var Actor = (function () {
         this.ctx = ctx;
     };
     /**
-     * This method is used in setup by the world class to pass a refrence to itself to the actor which can later be accessed by the getWorld() method
+     * This method is used in setup by the world class to pass a reference to itself to the actor which can later be accessed by the getWorld() method
      */
     Actor.prototype.setWorld = function (world) {
         this.world = world;
@@ -218,7 +228,7 @@ var Actor = (function () {
         this.image = img;
     };
     /**
-     * Scales the image of the actor to a specifed width while maintaining proportion
+     * Scales the image of the actor to a specified width while maintaining proportion
      */
     Actor.prototype.scaleImageProportionateToWidth = function (width) {
         var _this = this;
@@ -231,7 +241,7 @@ var Actor = (function () {
         };
     };
     /**
-     * Scales the image of the actor to a specifed height while maintaining proportion
+     * Scales the image of the actor to a specified height while maintaining proportion
      */
     Actor.prototype.scaleImageProportionateToHeight = function (height) {
         var _this = this;

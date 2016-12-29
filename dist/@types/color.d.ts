@@ -148,6 +148,9 @@ export declare const colorNames: {
     "yellow": string;
     "yellowgreen": string;
 };
+/**
+ * Class for working with color
+ */
 export declare class Color {
     private r;
     private g;

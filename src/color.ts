@@ -151,6 +151,9 @@ export const colorNames = {
 
 import {random} from './lib';
 
+/**
+ * Class for working with color
+ */
 export class Color {
     private r: number;
     private g: number;
@@ -163,41 +166,42 @@ export class Color {
         hex: /^#([a-zA-Z0-9]{6})/
     }
 
+    
     constructor(color?: string) {
         if(color) this.parse(color);
     }
 
     private parse(color: string) {
         if (this.reg.rgb.test(color)) {
-            let compontents = color.match(this.reg.rgb).slice(1, 4).map(c => parseFloat(c));;
+            let components = color.match(this.reg.rgb).slice(1, 4).map(c => parseFloat(c));;
 
-            this.r = compontents[0];
-            this.g = compontents[1];
-            this.b = compontents[2];
+            this.r = components[0];
+            this.g = components[1];
+            this.b = components[2];
             this.a = 1;
 
         } else if (this.reg.rgba.test(color)) {
-            let compontents = color.match(this.reg.rgba).slice(1, 5).map(c => parseFloat(c));
+            let components = color.match(this.reg.rgba).slice(1, 5).map(c => parseFloat(c));
 
-            this.r = compontents[0];
-            this.g = compontents[1];
-            this.b = compontents[2];
-            this.a = compontents[3];
+            this.r = components[0];
+            this.g = components[1];
+            this.b = components[2];
+            this.a = components[3];
 
         } else if (this.reg.hex.test(color)) {
             let hexString = color.match(this.reg.hex)[1];
-            let compontents = this.hexColorToRGB(hexString);
-            this.r = compontents.r;
-            this.g = compontents.g;
-            this.b = compontents.b;
+            let components = this.hexColorToRGB(hexString);
+            this.r = components.r;
+            this.g = components.g;
+            this.b = components.b;
             this.a = 1;
 
         } else if (colorNames[color.toLowerCase()] != undefined) {
             let hexString = colorNames[color.toLowerCase()];
-            let compontents = this.hexColorToRGB(hexString);
-            this.r = compontents.r;
-            this.g = compontents.g;
-            this.b = compontents.b;
+            let components = this.hexColorToRGB(hexString);
+            this.r = components.r;
+            this.g = components.g;
+            this.b = components.b;
             this.a = 1;
 
         } else {
@@ -255,13 +259,13 @@ export class Color {
 
     private hexColorToRGB(color: string) {
         color = color.replace('#', '');
-        let compontents: string[] = [];
+        let components: string[] = [];
 
         for (let p = 0; p < color.length; p += 2) {
-            compontents.push(color.slice(p, p + 2));
+            components.push(color.slice(p, p + 2));
         }
 
-        let decComponents = compontents.map(c => this.hexToDec(c));
+        let decComponents = components.map(c => this.hexToDec(c));
 
         return {
             r: decComponents[0],
