@@ -11,7 +11,7 @@ If you want to learn more about the library, please have a look at the [document
 
 ## Installation
 
-`npm i --save canvas-simulator`
+`$ npm i --save canvas-simulator`
 
 ## Creating the World
 
