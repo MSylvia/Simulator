@@ -1,6 +1,7 @@
 src/
 npm-scripts/
 docs/
+.vscode/
 tsconfig.json
 test.ts
 .npmignore
