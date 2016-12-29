@@ -1,6 +1,6 @@
 {
   "name": "canvas-simulator",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A modern game and simulation library for the HTML Canvas element targeted for the use with ES6, TypeScript or Babel.",
   "repository": {
     "type": "git",
