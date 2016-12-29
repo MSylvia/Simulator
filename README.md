@@ -4,7 +4,14 @@ A modern game and simulation library for the HTML Canvas element targeted for th
 ## Getting Started
 
 This library uses the modern ES6 class syntax, so before getting started you should learn to use tools like TypeScript or Babel to compile ES6 to ES5 or below.
+
 You also should use tools like browserify or WebPack to bundle the library to use it in the browser. 
+
+If you want to learn more about the library, please have a look at the [documentation](https://github.com/T-Specht/Simulator/blob/master/docs/overview.md "documentation").
+
+## Installation
+
+`npm i --save canvas-simulator`
 
 ## Creating the World
 
