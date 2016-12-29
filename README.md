@@ -164,4 +164,4 @@ Now that we have the code for our first World complete, we need to bundle it pro
 
 You can use tools like _browserify_ or _WebPack_ to do so.
 
-If you want to learn more about the library, please checkout the [documentation](https://www.google.com "documentation"). 
+If you want to learn more about the library, please checkout the [documentation](https://github.com/T-Specht/Simulator/blob/master/docs/overview.md "documentation"). 
