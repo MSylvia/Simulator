@@ -150,9 +150,6 @@ exports.colorNames = {
     "yellowgreen": "#9acd32"
 };
 var lib_1 = require("./lib");
-/**
- * Class for working with color
- */
 var Color = (function () {
     function Color(color) {
         this.reg = {

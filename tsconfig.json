@@ -6,9 +6,12 @@
         "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
-        "outDir": "dist"
+        "outDir": "dist/",
+        "removeComments": true,
+        "pretty": true
     },
     "exclude": [
-        "test.ts"
+        "test.ts",
+        "dist/"
     ]
 }

@@ -37,7 +37,6 @@ var CanvasImage = (function () {
         if (color === void 0) { color = 'black'; }
         if (style === void 0) { style = 'normal'; }
         if (height === void 0) { height = fontSize * 1.5; }
-        //height = fontSize * 1.5; → http://stackoverflow.com/a/11452091/4260143
         var ctx = lib_1.getNewCtx();
         ctx.font = style + " " + fontSize + "px " + font;
         var width = ctx.measureText(text).width;

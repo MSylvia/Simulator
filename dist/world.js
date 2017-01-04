@@ -1,12 +1,5 @@
 "use strict";
-/**
- * The World class is used to create a container for all the objects (Actors) in it.
- * You can use it by creating a subclass which inherits from the World class.
- */
 var World = (function () {
-    /**
-     * Create a new World by passing the CanvasRenderingContext2D and optionally width and height of the world.
-     */
     function World(context, width, height) {
         if (width === void 0) { width = 600; }
         if (height === void 0) { height = 400; }
@@ -35,7 +28,6 @@ var World = (function () {
         this.setSize(width, height);
         this.render();
         this.birthtime = new Date().getTime();
-        //Listen to Visibility
         document.addEventListener("visibilitychange", function () {
             var state = document.visibilityState;
             if (state == 'visible') {
@@ -45,24 +37,15 @@ var World = (function () {
                 _this.pause();
             }
         });
-        //Mouse Listeners
         canvas.addEventListener('click', function (e) { return _this.handleMouseEvent(e); });
         canvas.addEventListener('mousedown', function (e) { return _this.handleMouseEvent(e); });
         canvas.addEventListener('mouseup', function (e) { return _this.handleMouseEvent(e); });
         canvas.addEventListener('dblclick', function (e) { return _this.handleMouseEvent(e); });
         canvas.addEventListener('mousemove', function (e) { return _this.handleMouseMove(e); });
-        //Touch
-        //Todo
     }
-    /**
-    * Get the class name of the world
-    */
     World.prototype.getClass = function () {
         return this.constructor.name;
     };
-    /**
-     * Internal method for handling mouse events
-     */
     World.prototype.handleMouseEvent = function (e) {
         e.preventDefault();
         var x = e.offsetX, y = e.offsetY;
@@ -91,15 +74,9 @@ var World = (function () {
             this.sendMouseDownTo = [];
         }
     };
-    /**
-     * Test if an object has a function
-     */
     World.prototype.hasFunction = function (obj, functionName) {
         return typeof obj[functionName] == 'function';
     };
-    /**
-     * Register interval to the world. Returns the id of the interval.
-     */
     World.prototype.registerInterval = function (f, i) {
         var id = setInterval(f, i);
         this.registeredIntervals.push({
@@ -110,35 +87,23 @@ var World = (function () {
         });
         return id;
     };
-    /**
-     * Remove interval which has been registered through registerInterval method
-     */
     World.prototype.unregisterInterval = function (id) {
         var index = this.registeredIntervals.indexOf(this.registeredIntervals.filter(function (i) { return i.id == id; })[0]);
         clearInterval(this.registeredIntervals[index].id);
         this.registeredIntervals.splice(index, 1);
     };
-    /**
-     * Pause all active intervals which were registered through registerInterval method
-     */
     World.prototype.pauseAllIntervals = function () {
         this.registeredIntervals.filter(function (i) { return i.active; }).forEach(function (i) {
             clearInterval(i.id);
             i.active = false;
         });
     };
-    /**
-     * Start all paused intervals which were registered through registerInterval method
-     */
     World.prototype.startAllIntervals = function () {
         this.registeredIntervals.filter(function (i) { return !i.active; }).forEach(function (i) {
             i.id = setInterval(i.function, i.i);
             i.active = true;
         });
     };
-    /**
-    * Internal method for handling dragging in conjunction with mouse move
-    */
     World.prototype.handleMouseMove = function (e) {
         var x = e.offsetX, y = e.offsetY;
         for (var _i = 0, _a = this.actors; _i < _a.length; _i++) {
@@ -151,15 +116,9 @@ var World = (function () {
             }
         }
     };
-    /**
-     * Get current lifetime of world in milliseconds
-     */
     World.prototype.getLifetime = function () {
         return new Date().getTime() - this.birthtime;
     };
-    /**
-     * Enter fullscreen mode on canvas element
-     */
     World.prototype.enterFullscreen = function () {
         var _this = this;
         this.saveSize();
@@ -169,9 +128,6 @@ var World = (function () {
             _this.setSize(window.innerWidth, window.innerHeight);
         });
     };
-    /**
-     * Exit the fullscreen mode on canvas element
-     */
     World.prototype.exitFullscreen = function () {
         var _this = this;
         document.webkitExitFullscreen();
@@ -179,23 +135,13 @@ var World = (function () {
         setTimeout(function () { return _this.restoreSize(); }, 1000);
     };
     ;
-    /**
-     * Save the size of the canvas
-     */
     World.prototype.saveSize = function () {
         this.savedSize.width = this.width;
         this.savedSize.height = this.height;
     };
-    /**
-     * Restore the canvas to the saved size
-     */
     World.prototype.restoreSize = function () {
         this.setSize(this.savedSize.width, this.savedSize.height);
     };
-    /**
-     * Set the size of the canvas.
-     * Resolution gets set automatically
-     */
     World.prototype.setSize = function (width, height) {
         var factor = this.devicePixelRatio;
         var canvas = this.context.canvas;
@@ -207,24 +153,17 @@ var World = (function () {
         canvas.style.width = width + "px";
         this.context.scale(factor, factor);
     };
-    /**
-     * Adds the actor to the world at location x and y.
-     * If percent is set to true, x and y are not treated as pixel values but as percentages of width and hight of the world.
-     */
     World.prototype.addToWorld = function (actor, x, y, percent) {
         if (x === void 0) { x = 0; }
         if (y === void 0) { y = 0; }
         if (percent === void 0) { percent = false; }
-        //Set drawing context for render handling
         actor.setCtx(this.context);
-        // Set World context
         actor.setWorld(this);
         if (percent) {
             x = this.width * x / 100;
             y = this.height * y / 100;
         }
         else {
-            //Set x, y
             actor.setX(x);
             actor.setY(y);
         }
@@ -232,21 +171,14 @@ var World = (function () {
             obj: actor,
             className: actor.getClass()
         });
-        //Call Method
         if (this.hasFunction(actor, 'addedToWorld'))
             actor.addedToWorld(this);
     };
-    /**
-     * Removes actor from the world
-     */
     World.prototype.removeActor = function (a) {
         var actor = this.actors.filter(function (f) { return f.obj == a; })[0];
         var index = this.actors.indexOf(actor);
         this.actors.splice(index, 1);
     };
-    /**
-     * Get all actors in the world or just those with the class name specified
-     */
     World.prototype.getActors = function (className) {
         var actors = this.actors;
         if (className) {
@@ -254,22 +186,12 @@ var World = (function () {
         }
         return actors.map(function (a) { return a.obj; });
     };
-    /**
-     * Get the width of the world
-     */
     World.prototype.getWidth = function () {
         return this.width;
     };
-    /**
-     * Get the height of the world
-     */
     World.prototype.getHeight = function () {
         return this.height;
     };
-    /**
-     * Internal method to clear the canvas before each rendering method call.
-     * The background is being redrawn
-     */
     World.prototype.clear = function () {
         this.context.globalAlpha = 1;
         this.context.fillStyle = this.bgColor;
@@ -278,15 +200,9 @@ var World = (function () {
             this.context.drawImage(this.bgImage, this.bgPos.x, this.bgPos.y, this.bgImage.width, this.bgImage.height);
         }
     };
-    /**
-     * Sets the background color of the canvas
-     */
     World.prototype.setBackgroundColor = function (color) {
         this.bgColor = color;
     };
-    /**
-     * Set the background image and whether it should be used and the location of the image
-     */
     World.prototype.useBackgroundImage = function (image, use, pos) {
         if (use === void 0) { use = true; }
         if (use) {
@@ -300,22 +216,15 @@ var World = (function () {
             this.useImage = false;
         }
     };
-    /**
-     * Get the background color
-     */
     World.prototype.getBackgroundColor = function () {
         return this.bgColor;
     };
-    /**
-     * Internal method used to render the world with its background and all the actors in it.
-     */
     World.prototype.render = function () {
         var _this = this;
         if (!this.animationShouldRun)
             return;
         this.clear();
         var toRender = this.actors.slice();
-        // Build a list in which order to render the actors
         var renderingLists = [];
         var _loop_1 = function (orderItemClassName) {
             var associatedActors = toRender.filter(function (r) { return r.className == orderItemClassName; });
@@ -325,14 +234,11 @@ var World = (function () {
             }
             renderingLists.push(associatedActors);
         };
-        // Build list in this.renderingOrder order
         for (var _i = 0, _a = this.renderingOrder; _i < _a.length; _i++) {
             var orderItemClassName = _a[_i];
             _loop_1(orderItemClassName);
         }
-        // Add rest
         renderingLists.push(toRender);
-        // Go through the list backward, animate and render. The thing last rendered is display first
         for (var i = renderingLists.length - 1; i >= 0; i--) {
             for (var _b = 0, _c = renderingLists[i]; _b < _c.length; _b++) {
                 var actor = _c[_b];
@@ -348,10 +254,6 @@ var World = (function () {
             }
         });
     };
-    /**
-     * Sets the order on class level in which the actor should be rendered.
-     * E.g. first class specified will be rendered on top of all others.
-     */
     World.prototype.setRenderingOrder = function () {
         var order = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -359,9 +261,6 @@ var World = (function () {
         }
         this.renderingOrder = order;
     };
-    /**
-     * Starts/ Resumes the rendering of the world
-     */
     World.prototype.start = function () {
         if (!this.animationShouldRun) {
             console.info(this.getClass() + " has been started!");
@@ -372,9 +271,6 @@ var World = (function () {
             console.warn(this.getClass() + " is already running!");
         }
     };
-    /**
-     * Pauses the rendering of the world
-     */
     World.prototype.pause = function () {
         console.info(this.getClass() + " has been paused!");
         this.animationShouldRun = false;

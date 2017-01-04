@@ -1,7 +1,4 @@
 "use strict";
-/**
- * Returns a new Canvas Context to create/ draw images e.g. for actors
- */
 function getNewCtx(width, height) {
     if (width === void 0) { width = 50; }
     if (height === void 0) { height = 50; }
@@ -11,13 +8,6 @@ function getNewCtx(width, height) {
     return canvas.getContext('2d');
 }
 exports.getNewCtx = getNewCtx;
-/**
- * Get a random number between max and min.
- * Min is, if not specified otherwise, equal to zero.
- * If min and max are not specified, the result is between 0 and 1.
- * If intsOnly is true, which it is by default, the generated output will only include integer values
- * If excludeZero is set to true (by default it is false) the function's return value will not be zero
- */
 function random(max, min, intsOnly, excludeZero) {
     if (min === void 0) { min = 0; }
     if (intsOnly === void 0) { intsOnly = true; }
@@ -43,31 +33,18 @@ function random(max, min, intsOnly, excludeZero) {
     return value;
 }
 exports.random = random;
-/**
- * Pick a random element from array
- */
 function pickRandom(arr) {
     return arr[random(arr.length - 1, 0)];
 }
 exports.pickRandom = pickRandom;
-/**
- * Convert degrees to radians
- */
 function toRadians(degrees) {
     return degrees * Math.PI / 180;
 }
 exports.toRadians = toRadians;
-/**
- * Convert radians to degrees
- */
 function toDegrees(radians) {
     return radians * Math.PI / 180;
 }
 exports.toDegrees = toDegrees;
-/**
- * Scales the image to a given width while maintaining the aspect ratio.
- * The callback passes back the scaled image
- */
 function scaleImageProportionateToWidth(image, width, callback) {
     image.onload = function () {
         var factor = width / image.width;
@@ -77,10 +54,6 @@ function scaleImageProportionateToWidth(image, width, callback) {
     };
 }
 exports.scaleImageProportionateToWidth = scaleImageProportionateToWidth;
-/**
- * Scales the image to a given height while maintaining the aspect ratio.
- * The callback passes back the scaled image.
- */
 function scaleImageProportionateToHeight(image, height, callback) {
     image.onload = function () {
         var factor = height / image.height;
@@ -91,24 +64,15 @@ function scaleImageProportionateToHeight(image, height, callback) {
 }
 exports.scaleImageProportionateToHeight = scaleImageProportionateToHeight;
 var canvasImage_1 = require("./canvasImage");
-/**
- * Scales the image to cover a given width and height while maintaining the aspect ratio.
- * The callback passes back the scaled image.
- * You can set the position of the image in the container by setting the optional pos parameter after the callback to start, center or end.
- */
 function coverWithImage(image, tWidth, tHeight, callback, pos) {
     if (pos === void 0) { pos = 'center'; }
     image.onload = function () {
         var width = image.width, height = image.height;
-        //Result to store the scaled Image
         var result = new Image();
-        // It just works ¯\_(ツ)_/¯ 😂
-        // TODO: Understand and make better
         if (tWidth < width && tHeight < height) {
             var vWidth = tWidth < width ? -1 : 1, vHeight = tHeight < height ? -1 : 1;
             var dWidth = vWidth * (tWidth - width), dHeight = vHeight * (tHeight - height);
             if (dWidth < dHeight) {
-                //dWidth is min
                 var f = tWidth / width;
                 var pHeight = height * f;
                 var y = calcPos(tHeight, pHeight, pos);
@@ -117,7 +81,6 @@ function coverWithImage(image, tWidth, tHeight, callback, pos) {
                 result = i.getImage();
             }
             else {
-                //dHeight is min
                 var f = tHeight / height;
                 var pWidth = width * f;
                 var x = calcPos(tWidth, pWidth, pos);
@@ -130,7 +93,6 @@ function coverWithImage(image, tWidth, tHeight, callback, pos) {
             var vWidth = tWidth < width ? -1 : 1, vHeight = tHeight < height ? -1 : 1;
             var dWidth = vWidth * (tWidth - width), dHeight = vHeight * (tHeight - height);
             if (dWidth > dHeight) {
-                //dWidth is max
                 var f = tWidth / width;
                 var pHeight = height * f;
                 var y = calcPos(tHeight, pHeight, pos);
@@ -139,7 +101,6 @@ function coverWithImage(image, tWidth, tHeight, callback, pos) {
                 result = i.getImage();
             }
             else {
-                //dHeight is max
                 var f = tHeight / height;
                 var pWidth = width * f;
                 var x = calcPos(tWidth, pWidth, pos);
@@ -163,9 +124,6 @@ function coverWithImage(image, tWidth, tHeight, callback, pos) {
     }
 }
 exports.coverWithImage = coverWithImage;
-/**
- * Repeat the function i times.
- */
 function repeat(f, i) {
     for (var j = 0; j < i; j++) {
         f();

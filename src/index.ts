@@ -4,3 +4,4 @@ export * from './world';
 export * from './color';
 export * from './canvasImage';
 export * from './text';
+export * from './math/math';
