@@ -157,12 +157,12 @@ export declare class Color {
     constructor(color?: string);
     private parse(color);
     randomize(alpha?: boolean): this;
-    setColor(color: string): void;
+    setColor(color: string): this;
     setRGBA(r: number, g: number, b: number, a?: number): this;
-    setR(r: number): void;
-    setG(g: number): void;
-    setB(b: number): void;
-    setA(a: number): void;
+    setR(r: number): this;
+    setG(g: number): this;
+    setB(b: number): this;
+    setA(a: number): this;
     getR(): number;
     getG(): number;
     getB(): number;

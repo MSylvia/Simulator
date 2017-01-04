@@ -1,5 +1,13 @@
 import { World } from './world';
+import { Vector } from './math/vector';
 
+export enum Edges {
+    Top,
+    Left,
+    Right,
+    Bottom,
+    NoEdge
+}
 
 export interface Animate {
     /**
@@ -57,7 +65,7 @@ export abstract class Actor {
     constructor(imageSrc?: string) {
         this.birthtime = new Date().getTime();
 
-        if(imageSrc) this.setImageSrc(imageSrc)
+        if (imageSrc) this.setImageSrc(imageSrc)
     }
 
     /**
@@ -128,11 +136,11 @@ export abstract class Actor {
         }
     }
 
-    public setOpacity(o: number){
+    public setOpacity(o: number) {
         this.opacity = o;
     }
 
-    public getOpacity(){
+    public getOpacity() {
         return this.opacity;
     }
 
@@ -233,11 +241,35 @@ export abstract class Actor {
     /**
      * Check whether the actor is at the edge of the world
      */
-    public isAtEdge() {
-        return (
-            this.x <= 0 || this.x >= this.world.getWidth() ||
-            this.y <= 0 || this.y >= this.world.getHeight()
-        )
+    public isAtEdge(includeWidthAndHeight = true) {
+        if (includeWidthAndHeight) {
+            return (
+                this.x <= 0 || this.x + this.getWidth() >= this.world.getWidth() ||
+                this.y <= 0 || this.y + this.getHeight() >= this.world.getHeight()
+            )
+        } else {
+            return (
+                this.x <= 0 || this.x >= this.world.getWidth() ||
+                this.y <= 0 || this.y >= this.world.getHeight()
+            )
+        }
+
+    }
+
+    public getEdge(includeWidthAndHeight = true) {
+        if (includeWidthAndHeight) {
+            if (this.x <= 0) return Edges.Left;
+            if (this.y <= 0) return Edges.Top;
+            if (this.x + this.getWidth() >= this.world.getWidth()) return Edges.Right;
+            if (this.y + this.getHeight() >= this.world.getHeight()) return Edges.Bottom;
+            return Edges.NoEdge;
+        } else {
+            if (this.x <= 0) return Edges.Left;
+            if (this.y <= 0) return Edges.Top;
+            if (this.x >= this.world.getWidth()) return Edges.Right;
+            if (this.y >= this.world.getHeight()) return Edges.Bottom;
+            return Edges.NoEdge;
+        }
     }
 
     /**
@@ -246,6 +278,13 @@ export abstract class Actor {
     public setLocation(x: number, y: number, percent = false, originAtCenter = false) {
         this.setX(x, percent, originAtCenter);
         this.setY(y, percent, originAtCenter);
+    }
+
+    public setLocationVector(v: Vector) {
+        //console.log(v.x, v.y);
+
+        this.setX(v.x);
+        this.setY(v.y);
     }
 
     /**

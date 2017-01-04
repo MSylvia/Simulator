@@ -8,40 +8,6 @@ export function getNewCtx(width = 50, height = 50) {
     return canvas.getContext('2d');
 }
 
-/**
- * Get a random number between max and min. 
- * Min is, if not specified otherwise, equal to zero.
- * If min and max are not specified, the result is between 0 and 1.
- * If intsOnly is true, which it is by default, the generated output will only include integer values
- * If excludeZero is set to true (by default it is false) the function's return value will not be zero
- */
-export function random(max?: number, min = 0, intsOnly = true, excludeZero = false) {
-    let value = 0;
-
-    do {
-        if (max) {
-            if (intsOnly) value = Math.floor(Math.random() * (max - min + 1) + min);
-            else value = Math.random() * (max - min + 1) + min;
-        } else if (max && min) {
-            if (intsOnly) value = Math.floor(Math.random() * (max - min + 1) + min);
-            else value = Math.random() * (max - min + 1) + min;
-        } else {
-            value = Math.random();
-        }
-    } while (value == 0 && excludeZero);
-
-
-    return value;
-
-}
-
-/**
- * Pick a random element from array
- */
-export function pickRandom(arr: any[]) {
-    return arr[random(arr.length - 1, 0)];
-}
-
 
 /**
  * Convert degrees to radians

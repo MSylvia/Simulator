@@ -24,22 +24,22 @@ export class Vector{
     }
 
     public add(v: Vector){
-        this.components = this.components.map((c, i) => c + v[i]);
+        this.components = this.components.map((c, i) => c + v.getComponent(i));
         return this;
     }
 
     public subtract(v: Vector){
-        this.components = this.components.map((c, i) => c - v[i]);
+        this.components = this.components.map((c, i) => c - v.getComponent(i));
         return this;
     }
 
     public multiply(v: Vector){
-        this.components = this.components.map((c, i) => c * v[i]);
+        this.components = this.components.map((c, i) => c * v.getComponent(i));
         return this;
     }
 
     public divide(v: Vector){
-        this.components = this.components.map((c, i) => c / v[i]);
+        this.components = this.components.map((c, i) => c / v.getComponent(i));
         return this;
     }
 
@@ -52,6 +52,10 @@ export class Vector{
         return new Vector(...this.components);
     }
 
+    public getArray(){
+        return this.components;
+    }
+
     get x(){
         return this.components[0]
     }
@@ -62,12 +66,27 @@ export class Vector{
         return this.components[2]
     }
 
+    set x(val: number){
+        this.components[0] = val;
+    }
+    set y(val: number){
+        this.components[1] = val;
+    }
+    set z(val: number){
+        this.components[2] = val;
+    }
+    
+
     get numberOfComponents(){
         return this.components.length;
     }
 
+
     getComponent(i: number){
         return this.components[i]
+    }
+    setComponent(i: number, value: number){
+        this.components[i] = value;
     }
 
 

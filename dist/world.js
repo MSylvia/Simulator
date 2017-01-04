@@ -15,6 +15,7 @@ var World = (function () {
             height: 400
         };
         this.devicePixelRatio = window.devicePixelRatio || 1;
+        this.runOwnAnimationBool = false;
         this.bgColor = 'white';
         this.useImage = false;
         this.bgImage = new Image();
@@ -219,10 +220,18 @@ var World = (function () {
     World.prototype.getBackgroundColor = function () {
         return this.bgColor;
     };
+    World.prototype.animate = function () {
+    };
+    World.prototype.runOwnAnimation = function (run) {
+        if (run === void 0) { run = true; }
+        this.runOwnAnimationBool = run;
+    };
     World.prototype.render = function () {
         var _this = this;
         if (!this.animationShouldRun)
             return;
+        if (this.runOwnAnimationBool)
+            this.animate();
         this.clear();
         var toRender = this.actors.slice();
         var renderingLists = [];

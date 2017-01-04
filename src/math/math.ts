@@ -57,7 +57,7 @@ export function sortDesc(...ns: number[]) {
     return sort(...ns).reverse();
 }
 
-export function solve(equ: string, accuarcy: number = 3, min: number = -100, max: number = 100) {
+/*export function solve(equ: string, accuarcy: number = 3, min: number = -100, max: number = 100) {
 
     // accuarcy = digits after decimal point of result
     var steps = 1/Math.pow(10, accuarcy);
@@ -110,7 +110,7 @@ export function solve(equ: string, accuarcy: number = 3, min: number = -100, max
     }else{
         return [...currentBest.x];
     }
-}
+}*/
 
 export function range(start: number, end: number, steps: number = 1) {
     var ret = [];
@@ -120,18 +120,18 @@ export function range(start: number, end: number, steps: number = 1) {
     return ret;
 }
 
-export function fibonacci(n:number, includeZero: boolean = false) {
+export function fibonacci(n: number, includeZero: boolean = false) {
 
     // after n = 1476 and includeZero = false, numbers become infinity
 
     if (includeZero) {
         var ret = [0, 1];
-    }else{
+    } else {
         var ret = [1, 1];
     }
 
     while (ret.length < n) {
-        ret.push(ret[ret.length-1] + ret[ret.length-2])
+        ret.push(ret[ret.length - 1] + ret[ret.length - 2])
     }
 
     return ret;
@@ -142,7 +142,7 @@ export function sigmoid(x: number) {
     return 1 / (1 + Math.pow(e, -x));
 }
 
-export function isFibonacci(n: number){
+export function isFibonacci(n: number) {
 
     var first = 5 * Math.pow(n, 2) + 4;
     var second = 5 * Math.pow(n, 2) - 4
@@ -158,26 +158,62 @@ export function iPart(n: number) {
     return Math.floor(n);
 }
 
-export function fPart(n: number){
+export function fPart(n: number) {
     return parseFloat('0.' + n.toString().split('.')[1]);
 }
 
-/*export function random(min=0, max=1) {
-    return Math.random() * (max - min) + min;
-}*/
+export function random<T>(arg1: T | Array<T>, arg2?: number): T {
+    //Pick Random
+    if (arg1 instanceof Array) {
+        return pickRandom(arg1);
+    } else if (!arg2) {
+        let max = <any>arg1
+        return <T><any>randomMax(max);
+    } else {
+        let min = <any>arg1
+        return <T><any>randomMinMax(min, arg2);
+    }
 
-export function randomInt(min=0, max=1) {
+    function randomMinMax(min: number, max: number) {
+        return Math.random() * (max - min) + min;
+    }
+
+    function randomMax(max: number) {
+        return randomMinMax(0, max);
+    }
+
+    function pickRandom(arr: Array<T>) {
+        return arr[randomMinMax(arr.length - 1, 0)];
+    }
+
+}
+
+export function limit(n: number, bound1: number, bound2?: number) {
+    if (!bound2) {
+        bound2 = 0;
+        if (n > bound1) {
+            return bound1;
+        }
+    }else{
+        if(n < bound1) return bound1;
+        if(n > bound2) return bound2;
+    }
+
+    return n;
+}
+
+export function randomInt(min = 0, max = 1) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // Helper functions
 
 function isInt(value) {
-  if (isNaN(value)) {
-    return false;
-  }
-  var x = parseFloat(value);
-  return (x | 0) === x;
+    if (isNaN(value)) {
+        return false;
+    }
+    var x = parseFloat(value);
+    return (x | 0) === x;
 }
 
 //Scales vector (array)

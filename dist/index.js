@@ -8,4 +8,5 @@ __export(require("./world"));
 __export(require("./color"));
 __export(require("./canvasImage"));
 __export(require("./text"));
+__export(require("./physics"));
 __export(require("./math/math"));

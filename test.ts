@@ -1,4 +1,4 @@
-import {Vector} from './src/';
+import {Vector} from '.';
 
 let v = new Vector(1, 2);
 let v2 = new Vector(3, 3);

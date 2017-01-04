@@ -10,11 +10,13 @@ export declare class Vector {
     divide(v: Vector): this;
     scale(n: number): this;
     get(): Vector;
-    readonly x: number;
-    readonly y: number;
-    readonly z: number;
+    getArray(): number[];
+    x: number;
+    y: number;
+    z: number;
     readonly numberOfComponents: number;
     getComponent(i: number): number;
+    setComponent(i: number, value: number): void;
     static add(v1: Vector, v2: Vector): Vector;
     static subtract(v1: Vector, v2: Vector): Vector;
     static multiply(v1: Vector, v2: Vector): Vector;

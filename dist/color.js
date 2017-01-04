@@ -149,7 +149,7 @@ exports.colorNames = {
     "yellow": "#ffff00",
     "yellowgreen": "#9acd32"
 };
-var lib_1 = require("./lib");
+var math_1 = require("./math/math");
 var Color = (function () {
     function Color(color) {
         this.reg = {
@@ -198,14 +198,15 @@ var Color = (function () {
     };
     Color.prototype.randomize = function (alpha) {
         if (alpha === void 0) { alpha = false; }
-        this.r = lib_1.random(255);
-        this.g = lib_1.random(255);
-        this.b = lib_1.random(255);
-        alpha ? this.a = lib_1.random() : this.a = 1;
+        this.r = math_1.random(255);
+        this.g = math_1.random(255);
+        this.b = math_1.random(255);
+        alpha ? this.a = math_1.random(0, 1) : this.a = 1;
         return this;
     };
     Color.prototype.setColor = function (color) {
         this.parse(color);
+        return this;
     };
     Color.prototype.setRGBA = function (r, g, b, a) {
         if (a === void 0) { a = 1; }
@@ -217,15 +218,19 @@ var Color = (function () {
     };
     Color.prototype.setR = function (r) {
         this.r = r;
+        return this;
     };
     Color.prototype.setG = function (g) {
         this.g = g;
+        return this;
     };
     Color.prototype.setB = function (b) {
         this.b = b;
+        return this;
     };
     Color.prototype.setA = function (a) {
         this.a = a;
+        return this;
     };
     Color.prototype.getR = function () {
         return this.r;

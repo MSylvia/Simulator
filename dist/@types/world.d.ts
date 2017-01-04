@@ -9,6 +9,7 @@ export declare abstract class World {
     private birthtime;
     private savedSize;
     private devicePixelRatio;
+    private runOwnAnimationBool;
     bgColor: string;
     private useImage;
     private bgImage;
@@ -42,6 +43,8 @@ export declare abstract class World {
         y: number;
     }): void;
     getBackgroundColor(): string;
+    animate(): void;
+    runOwnAnimation(run?: boolean): void;
     private render();
     setRenderingOrder(...order: any[]): void;
     start(): void;

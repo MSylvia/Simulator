@@ -8,35 +8,6 @@ function getNewCtx(width, height) {
     return canvas.getContext('2d');
 }
 exports.getNewCtx = getNewCtx;
-function random(max, min, intsOnly, excludeZero) {
-    if (min === void 0) { min = 0; }
-    if (intsOnly === void 0) { intsOnly = true; }
-    if (excludeZero === void 0) { excludeZero = false; }
-    var value = 0;
-    do {
-        if (max) {
-            if (intsOnly)
-                value = Math.floor(Math.random() * (max - min + 1) + min);
-            else
-                value = Math.random() * (max - min + 1) + min;
-        }
-        else if (max && min) {
-            if (intsOnly)
-                value = Math.floor(Math.random() * (max - min + 1) + min);
-            else
-                value = Math.random() * (max - min + 1) + min;
-        }
-        else {
-            value = Math.random();
-        }
-    } while (value == 0 && excludeZero);
-    return value;
-}
-exports.random = random;
-function pickRandom(arr) {
-    return arr[random(arr.length - 1, 0)];
-}
-exports.pickRandom = pickRandom;
 function toRadians(degrees) {
     return degrees * Math.PI / 180;
 }

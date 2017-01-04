@@ -1,4 +1,12 @@
 import { World } from './world';
+import { Vector } from './math/vector';
+export declare enum Edges {
+    Top = 0,
+    Left = 1,
+    Right = 2,
+    Bottom = 3,
+    NoEdge = 4,
+}
 export interface Animate {
     animate(): void;
 }
@@ -45,8 +53,10 @@ export declare abstract class Actor {
     getHeight(): number;
     intersects(a: Actor): boolean;
     pointIsOnActor(x: number, y: number): boolean;
-    isAtEdge(): boolean;
+    isAtEdge(includeWidthAndHeight?: boolean): boolean;
+    getEdge(includeWidthAndHeight?: boolean): Edges;
     setLocation(x: number, y: number, percent?: boolean, originAtCenter?: boolean): void;
+    setLocationVector(v: Vector): void;
     render(): void;
     setCtx(ctx: CanvasRenderingContext2D): void;
     setWorld(world: World): void;

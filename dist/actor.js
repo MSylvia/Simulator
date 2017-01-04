@@ -1,4 +1,12 @@
 "use strict";
+var Edges;
+(function (Edges) {
+    Edges[Edges["Top"] = 0] = "Top";
+    Edges[Edges["Left"] = 1] = "Left";
+    Edges[Edges["Right"] = 2] = "Right";
+    Edges[Edges["Bottom"] = 3] = "Bottom";
+    Edges[Edges["NoEdge"] = 4] = "NoEdge";
+})(Edges = exports.Edges || (exports.Edges = {}));
 var Actor = (function () {
     function Actor(imageSrc) {
         this.devicePixelRatio = window.devicePixelRatio || 1;
@@ -90,15 +98,51 @@ var Actor = (function () {
         return (this.getX() <= x && this.getX() + this.getWidth() >= x) &&
             (this.getY() <= y && this.getY() + this.getHeight() >= y);
     };
-    Actor.prototype.isAtEdge = function () {
-        return (this.x <= 0 || this.x >= this.world.getWidth() ||
-            this.y <= 0 || this.y >= this.world.getHeight());
+    Actor.prototype.isAtEdge = function (includeWidthAndHeight) {
+        if (includeWidthAndHeight === void 0) { includeWidthAndHeight = true; }
+        if (includeWidthAndHeight) {
+            return (this.x <= 0 || this.x + this.getWidth() >= this.world.getWidth() ||
+                this.y <= 0 || this.y + this.getHeight() >= this.world.getHeight());
+        }
+        else {
+            return (this.x <= 0 || this.x >= this.world.getWidth() ||
+                this.y <= 0 || this.y >= this.world.getHeight());
+        }
+    };
+    Actor.prototype.getEdge = function (includeWidthAndHeight) {
+        if (includeWidthAndHeight === void 0) { includeWidthAndHeight = true; }
+        if (includeWidthAndHeight) {
+            if (this.x <= 0)
+                return Edges.Left;
+            if (this.y <= 0)
+                return Edges.Top;
+            if (this.x + this.getWidth() >= this.world.getWidth())
+                return Edges.Right;
+            if (this.y + this.getHeight() >= this.world.getHeight())
+                return Edges.Bottom;
+            return Edges.NoEdge;
+        }
+        else {
+            if (this.x <= 0)
+                return Edges.Left;
+            if (this.y <= 0)
+                return Edges.Top;
+            if (this.x >= this.world.getWidth())
+                return Edges.Right;
+            if (this.y >= this.world.getHeight())
+                return Edges.Bottom;
+            return Edges.NoEdge;
+        }
     };
     Actor.prototype.setLocation = function (x, y, percent, originAtCenter) {
         if (percent === void 0) { percent = false; }
         if (originAtCenter === void 0) { originAtCenter = false; }
         this.setX(x, percent, originAtCenter);
         this.setY(y, percent, originAtCenter);
+    };
+    Actor.prototype.setLocationVector = function (v) {
+        this.setX(v.x);
+        this.setY(v.y);
     };
     Actor.prototype.render = function () {
         if (this.image) {

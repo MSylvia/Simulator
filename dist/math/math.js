@@ -81,45 +81,6 @@ function sortDesc() {
     return sort.apply(void 0, ns).reverse();
 }
 exports.sortDesc = sortDesc;
-function solve(equ, accuarcy, min, max) {
-    if (accuarcy === void 0) { accuarcy = 3; }
-    if (min === void 0) { min = -100; }
-    if (max === void 0) { max = 100; }
-    var steps = 1 / Math.pow(10, accuarcy);
-    var left = equ.split('=')[0].trim();
-    var right = equ.split('=')[1].trim();
-    var xes = range(min, max, steps);
-    var currentBest;
-    var matches = [];
-    {
-        var x = xes[0];
-        currentBest = {
-            x: x,
-            diff: Math.pow(eval(left) - eval(right), 2)
-        };
-    }
-    xes.forEach(function (x) {
-        var diff = Math.pow(eval(left) - eval(right), 2);
-        if (diff < currentBest.diff) {
-            currentBest.x = x;
-            currentBest.diff = diff;
-        }
-        else if (diff === currentBest.diff) {
-            currentBest.x = [currentBest.x, x];
-            currentBest.diff = diff;
-        }
-        if (diff === 0) {
-            matches.push(x);
-        }
-    });
-    if (matches.length > 0) {
-        return matches;
-    }
-    else {
-        return currentBest.x.slice();
-    }
-}
-exports.solve = solve;
 function range(start, end, steps) {
     if (steps === void 0) { steps = 1; }
     var ret = [];
@@ -165,6 +126,45 @@ function fPart(n) {
     return parseFloat('0.' + n.toString().split('.')[1]);
 }
 exports.fPart = fPart;
+function random(arg1, arg2) {
+    if (arg1 instanceof Array) {
+        return pickRandom(arg1);
+    }
+    else if (!arg2) {
+        var max_1 = arg1;
+        return randomMax(max_1);
+    }
+    else {
+        var min_1 = arg1;
+        return randomMinMax(min_1, arg2);
+    }
+    function randomMinMax(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+    function randomMax(max) {
+        return randomMinMax(0, max);
+    }
+    function pickRandom(arr) {
+        return arr[randomMinMax(arr.length - 1, 0)];
+    }
+}
+exports.random = random;
+function limit(n, bound1, bound2) {
+    if (!bound2) {
+        bound2 = 0;
+        if (n > bound1) {
+            return bound1;
+        }
+    }
+    else {
+        if (n < bound1)
+            return bound1;
+        if (n > bound2)
+            return bound2;
+    }
+    return n;
+}
+exports.limit = limit;
 function randomInt(min, max) {
     if (min === void 0) { min = 0; }
     if (max === void 0) { max = 1; }

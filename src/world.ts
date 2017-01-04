@@ -21,6 +21,8 @@ export abstract class World {
     }
     private devicePixelRatio = window.devicePixelRatio || 1;
 
+    private runOwnAnimationBool = false;
+
 
     public bgColor = 'white';
     private useImage = false;
@@ -354,12 +356,22 @@ export abstract class World {
         return this.bgColor;
     }
 
+    // @Overwrite
+    public animate(){
+
+    }
+    public runOwnAnimation(run = true){
+        this.runOwnAnimationBool = run;
+    }
+
     /**
      * Internal method used to render the world with its background and all the actors in it.
      */
     private render() {
 
         if (!this.animationShouldRun) return;
+
+        if(this.runOwnAnimationBool) this.animate();
 
         this.clear();
 

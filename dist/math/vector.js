@@ -23,19 +23,19 @@ var Vector = (function () {
         return this;
     };
     Vector.prototype.add = function (v) {
-        this.components = this.components.map(function (c, i) { return c + v[i]; });
+        this.components = this.components.map(function (c, i) { return c + v.getComponent(i); });
         return this;
     };
     Vector.prototype.subtract = function (v) {
-        this.components = this.components.map(function (c, i) { return c - v[i]; });
+        this.components = this.components.map(function (c, i) { return c - v.getComponent(i); });
         return this;
     };
     Vector.prototype.multiply = function (v) {
-        this.components = this.components.map(function (c, i) { return c * v[i]; });
+        this.components = this.components.map(function (c, i) { return c * v.getComponent(i); });
         return this;
     };
     Vector.prototype.divide = function (v) {
-        this.components = this.components.map(function (c, i) { return c / v[i]; });
+        this.components = this.components.map(function (c, i) { return c / v.getComponent(i); });
         return this;
     };
     Vector.prototype.scale = function (n) {
@@ -45,9 +45,15 @@ var Vector = (function () {
     Vector.prototype.get = function () {
         return new (Vector.bind.apply(Vector, [void 0].concat(this.components)))();
     };
+    Vector.prototype.getArray = function () {
+        return this.components;
+    };
     Object.defineProperty(Vector.prototype, "x", {
         get: function () {
             return this.components[0];
+        },
+        set: function (val) {
+            this.components[0] = val;
         },
         enumerable: true,
         configurable: true
@@ -56,12 +62,18 @@ var Vector = (function () {
         get: function () {
             return this.components[1];
         },
+        set: function (val) {
+            this.components[1] = val;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Vector.prototype, "z", {
         get: function () {
             return this.components[2];
+        },
+        set: function (val) {
+            this.components[2] = val;
         },
         enumerable: true,
         configurable: true
@@ -75,6 +87,9 @@ var Vector = (function () {
     });
     Vector.prototype.getComponent = function (i) {
         return this.components[i];
+    };
+    Vector.prototype.setComponent = function (i, value) {
+        this.components[i] = value;
     };
     Vector.add = function (v1, v2) {
         var components = [];

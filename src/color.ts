@@ -149,7 +149,7 @@ export const colorNames = {
     "yellowgreen": "#9acd32"
 }
 
-import {random} from './lib';
+import {random} from './math/math';
 
 /**
  * Class for working with color
@@ -214,12 +214,13 @@ export class Color {
         this.g = random(255);
         this.b = random(255);       
 
-        alpha ? this.a = random(): this.a = 1;
+        alpha ? this.a = random(0, 1): this.a = 1;
         return this;
     }
 
     public setColor(color: string){
         this.parse(color);
+        return this;
     }
 
     public setRGBA(r: number, g: number, b: number, a = 1){
@@ -232,15 +233,19 @@ export class Color {
 
     public setR(r: number){
         this.r = r;
+        return this;
     }
     public setG(g: number){
         this.g = g;
+        return this;
     }
     public setB(b: number){
         this.b = b;
+        return this;
     }
     public setA(a: number){
         this.a = a;
+        return this;
     }
 
     public getR(){
