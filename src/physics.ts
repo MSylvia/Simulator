@@ -8,12 +8,12 @@ export abstract class Body extends Actor {
 
     public acceleration: Vector = new Vector(0, 0);
     public velocity: Vector = new Vector(0, 0);
-    public location: Vector;
+    
 
-    private includeWidthAndHeightInEdgeCalc = true;
+    private includeWidthAndHeightInEdgeCalc = false;
     private resetLocationAtEdges = true;
 
-    constructor(private mass: number = 1, private atEdgeBehavior = BodyEnums.AtEdgeBehaviors.None, animation?: Function) {
+    constructor(private mass: number = 1, private atEdgeBehavior = BodyEnums.AtEdgeBehaviors.None) {
         super();
     }
 
@@ -39,8 +39,6 @@ export abstract class Body extends Actor {
         this.location.add(this.velocity);
         this.acceleration.scale(0);
 
-        this.setLocationVector(this.location);
-
         if (this.isAtEdge(this.includeWidthAndHeightInEdgeCalc)) {
 
             switch (this.atEdgeBehavior) {
@@ -50,7 +48,8 @@ export abstract class Body extends Actor {
                 case BodyEnums.AtEdgeBehaviors.None:
                     break;
                 case BodyEnums.AtEdgeBehaviors.Repel:
-                    this.repel();
+                    //this.repel();
+                    this.repelNOC();
                     break;
                 case BodyEnums.AtEdgeBehaviors.Reappear:
                     this.reappear();
@@ -74,36 +73,78 @@ export abstract class Body extends Actor {
 
     }
 
-    public getSpeed(){
+    public getSpeed() {
         return this.velocity.magnitude();
     }
 
     private repel() {
 
+        // Me (Strange Damping effect)
+
         switch (this.getEdge(this.includeWidthAndHeightInEdgeCalc)) {
             case Edges.Bottom:
                 this.velocity.y *= -1;
-                if(this.resetLocationAtEdges) this.location.y = this.getWorld().getHeight() - this.getHeight();
+                if (this.resetLocationAtEdges) this.location.y = this.includeWidthAndHeightInEdgeCalc ? this.getWorld().getHeight() - this.getHeight() : this.getWorld().getHeight();
                 break;
             case Edges.Top:
                 this.velocity.y *= -1;
-                if(this.resetLocationAtEdges) this.location.y = 0;
+                if (this.resetLocationAtEdges) this.location.y = 0;
                 break;
             case Edges.Left:
                 this.velocity.x *= -1;
-                if(this.resetLocationAtEdges) this.location.x = 0;
+                if (this.resetLocationAtEdges) this.location.x = 0;
                 break;
             case Edges.Right:
                 this.velocity.x *= -1;
-                if(this.resetLocationAtEdges) this.location.x = this.getWorld().getWidth() - this.getWidth();
+                if (this.resetLocationAtEdges) this.location.x = this.includeWidthAndHeightInEdgeCalc ? this.getWorld().getWidth() - this.getWidth() : this.getWorld().getWidth();
                 break;
 
             default:
                 break;
         }
+
+        
+
     }
 
-    public setResetLocationAtEdges(doSo: boolean){
+    private repelNOC(){
+        // The Nature Of Code
+        /*let width = super.getWorld().getWidth();
+        let height = super.getWorld().getHeight();
+
+        if (this.location.x > width) {
+            this.location.x = width;
+            this.velocity.x *= -1;
+        } else if (this.location.x < 0) {
+            this.velocity.x *= -1;
+            this.location.x = 0;
+        }
+        if (this.location.y > height) {
+            this.location.y = height;
+            this.velocity.y *= -1;
+        }*/
+        
+        let width = super.getWorld().getWidth();
+        let height = super.getWorld().getHeight();
+
+        if (this.location.x > width) {
+            this.location.x = width;
+            this.velocity.x *= -1;
+        } else if (this.location.x < 0) {
+            
+            this.velocity.x *= -1;
+            this.location.x = 0;
+        }
+        if (this.location.y > height) {
+            this.location.y = height;
+            this.velocity.y *= -1;
+        }else if(this.location.y < 0){
+            this.location.y = 0;
+            this.velocity.y *= -1;
+        }
+    }
+
+    public setResetLocationAtEdges(doSo: boolean) {
         this.resetLocationAtEdges = doSo;
     }
 
@@ -140,7 +181,7 @@ export abstract class Body extends Actor {
     }
 
     public limitSpeed(max) {
-        if(this.velocity.magnitude() > max){
+        if (this.velocity.magnitude() > max) {
             this.velocity.normalize().scale(max);
         }
     }

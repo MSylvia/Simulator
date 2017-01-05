@@ -1,12 +1,14 @@
 "use strict";
 var World = (function () {
-    function World(context, width, height) {
+    function World(context, width, height, startOwnAnimationAfter) {
         if (width === void 0) { width = 600; }
         if (height === void 0) { height = 400; }
+        if (startOwnAnimationAfter === void 0) { startOwnAnimationAfter = 500; }
         var _this = this;
         this.context = context;
         this.width = width;
         this.height = height;
+        this.startOwnAnimationAfter = startOwnAnimationAfter;
         this.actors = [];
         this.renderingOrder = [];
         this.sendMouseDownTo = [];
@@ -43,6 +45,7 @@ var World = (function () {
         canvas.addEventListener('mouseup', function (e) { return _this.handleMouseEvent(e); });
         canvas.addEventListener('dblclick', function (e) { return _this.handleMouseEvent(e); });
         canvas.addEventListener('mousemove', function (e) { return _this.handleMouseMove(e); });
+        setTimeout(function () { return _this.runOwnAnimation(); }, this.startOwnAnimationAfter);
     }
     World.prototype.getClass = function () {
         return this.constructor.name;
@@ -230,9 +233,9 @@ var World = (function () {
         var _this = this;
         if (!this.animationShouldRun)
             return;
+        this.clear();
         if (this.runOwnAnimationBool)
             this.animate();
-        this.clear();
         var toRender = this.actors.slice();
         var renderingLists = [];
         var _loop_1 = function (orderItemClassName) {

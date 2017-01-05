@@ -12,10 +12,9 @@ export declare abstract class Body extends Actor {
     private atEdgeBehavior;
     acceleration: Vector;
     velocity: Vector;
-    location: Vector;
     private includeWidthAndHeightInEdgeCalc;
     private resetLocationAtEdges;
-    constructor(mass?: number, atEdgeBehavior?: BodyEnums.AtEdgeBehaviors, animation?: Function);
+    constructor(mass?: number, atEdgeBehavior?: BodyEnums.AtEdgeBehaviors);
     addedToWorld(world: World): void;
     applyForce(f: Vector | number[]): void;
     gravity(g: number): void;
@@ -24,6 +23,7 @@ export declare abstract class Body extends Actor {
     beforeCalc(): void;
     getSpeed(): number;
     private repel();
+    private repelNOC();
     setResetLocationAtEdges(doSo: boolean): void;
     private reappear();
     limitVelocity(min: any, max: any): void;

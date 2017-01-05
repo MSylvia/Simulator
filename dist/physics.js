@@ -17,7 +17,7 @@ var BodyEnums;
 })(BodyEnums = exports.BodyEnums || (exports.BodyEnums = {}));
 var Body = (function (_super) {
     __extends(Body, _super);
-    function Body(mass, atEdgeBehavior, animation) {
+    function Body(mass, atEdgeBehavior) {
         if (mass === void 0) { mass = 1; }
         if (atEdgeBehavior === void 0) { atEdgeBehavior = BodyEnums.AtEdgeBehaviors.None; }
         var _this = _super.call(this) || this;
@@ -25,7 +25,7 @@ var Body = (function (_super) {
         _this.atEdgeBehavior = atEdgeBehavior;
         _this.acceleration = new _1.Vector(0, 0);
         _this.velocity = new _1.Vector(0, 0);
-        _this.includeWidthAndHeightInEdgeCalc = true;
+        _this.includeWidthAndHeightInEdgeCalc = false;
         _this.resetLocationAtEdges = true;
         return _this;
     }
@@ -44,7 +44,6 @@ var Body = (function (_super) {
         this.velocity.add(this.acceleration);
         this.location.add(this.velocity);
         this.acceleration.scale(0);
-        this.setLocationVector(this.location);
         if (this.isAtEdge(this.includeWidthAndHeightInEdgeCalc)) {
             switch (this.atEdgeBehavior) {
                 case BodyEnums.AtEdgeBehaviors.Destroy:
@@ -53,7 +52,7 @@ var Body = (function (_super) {
                 case BodyEnums.AtEdgeBehaviors.None:
                     break;
                 case BodyEnums.AtEdgeBehaviors.Repel:
-                    this.repel();
+                    this.repelNOC();
                     break;
                 case BodyEnums.AtEdgeBehaviors.Reappear:
                     this.reappear();
@@ -76,7 +75,7 @@ var Body = (function (_super) {
             case _1.Edges.Bottom:
                 this.velocity.y *= -1;
                 if (this.resetLocationAtEdges)
-                    this.location.y = this.getWorld().getHeight() - this.getHeight();
+                    this.location.y = this.includeWidthAndHeightInEdgeCalc ? this.getWorld().getHeight() - this.getHeight() : this.getWorld().getHeight();
                 break;
             case _1.Edges.Top:
                 this.velocity.y *= -1;
@@ -91,10 +90,30 @@ var Body = (function (_super) {
             case _1.Edges.Right:
                 this.velocity.x *= -1;
                 if (this.resetLocationAtEdges)
-                    this.location.x = this.getWorld().getWidth() - this.getWidth();
+                    this.location.x = this.includeWidthAndHeightInEdgeCalc ? this.getWorld().getWidth() - this.getWidth() : this.getWorld().getWidth();
                 break;
             default:
                 break;
+        }
+    };
+    Body.prototype.repelNOC = function () {
+        var width = _super.prototype.getWorld.call(this).getWidth();
+        var height = _super.prototype.getWorld.call(this).getHeight();
+        if (this.location.x > width) {
+            this.location.x = width;
+            this.velocity.x *= -1;
+        }
+        else if (this.location.x < 0) {
+            this.velocity.x *= -1;
+            this.location.x = 0;
+        }
+        if (this.location.y > height) {
+            this.location.y = height;
+            this.velocity.y *= -1;
+        }
+        else if (this.location.y < 0) {
+            this.location.y = 0;
+            this.velocity.y *= -1;
         }
     };
     Body.prototype.setResetLocationAtEdges = function (doSo) {

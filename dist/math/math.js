@@ -171,6 +171,10 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 exports.randomInt = randomInt;
+function map(n, in_min, in_max, out_min, out_max) {
+    return (n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+exports.map = map;
 function isInt(value) {
     if (isNaN(value)) {
         return false;

@@ -3,6 +3,7 @@ export declare abstract class World {
     private context;
     private width;
     private height;
+    private startOwnAnimationAfter;
     private actors;
     private renderingOrder;
     private sendMouseDownTo;
@@ -16,7 +17,7 @@ export declare abstract class World {
     private bgPos;
     private registeredIntervals;
     private animationShouldRun;
-    constructor(context: CanvasRenderingContext2D, width?: number, height?: number);
+    constructor(context: CanvasRenderingContext2D, width?: number, height?: number, startOwnAnimationAfter?: number);
     getClass(): any;
     private handleMouseEvent(e);
     private hasFunction(obj, functionName);

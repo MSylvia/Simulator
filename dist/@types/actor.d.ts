@@ -24,8 +24,8 @@ export declare abstract class Actor {
     private devicePixelRatio;
     private image;
     private opacity;
-    private x;
-    private y;
+    location: Vector;
+    private origin;
     private rotation;
     isBeingDragged: boolean;
     private world;
@@ -55,6 +55,7 @@ export declare abstract class Actor {
     pointIsOnActor(x: number, y: number): boolean;
     isAtEdge(includeWidthAndHeight?: boolean): boolean;
     getEdge(includeWidthAndHeight?: boolean): Edges;
+    setOrigin(x: number, y: number): void;
     setLocation(x: number, y: number, percent?: boolean, originAtCenter?: boolean): void;
     setLocationVector(v: Vector): void;
     render(): void;

@@ -44,7 +44,7 @@ export abstract class World {
     /**
      * Create a new World by passing the CanvasRenderingContext2D and optionally width and height of the world.
      */
-    constructor(private context: CanvasRenderingContext2D, private width = 600, private height = 400) {
+    constructor(private context: CanvasRenderingContext2D, private width = 600, private height = 400, private startOwnAnimationAfter = 500) {
 
 
         let canvas = this.context.canvas;
@@ -74,6 +74,11 @@ export abstract class World {
 
         //Touch
         //Todo
+
+
+        // Start own animation
+
+        setTimeout(() => this.runOwnAnimation(), this.startOwnAnimationAfter);
     }
 
     /**
@@ -371,9 +376,9 @@ export abstract class World {
 
         if (!this.animationShouldRun) return;
 
-        if(this.runOwnAnimationBool) this.animate();
-
         this.clear();
+
+        if(this.runOwnAnimationBool) this.animate();
 
 
         let toRender = this.actors.slice();

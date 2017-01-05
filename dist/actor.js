@@ -1,4 +1,5 @@
 "use strict";
+var vector_1 = require("./math/vector");
 var Edges;
 (function (Edges) {
     Edges[Edges["Top"] = 0] = "Top";
@@ -12,8 +13,8 @@ var Actor = (function () {
         this.devicePixelRatio = window.devicePixelRatio || 1;
         this.image = new Image();
         this.opacity = 1;
-        this.x = 0;
-        this.y = 0;
+        this.location = new vector_1.Vector(0, 0);
+        this.origin = new vector_1.Vector(0, 0);
         this.rotation = 0;
         this.isBeingDragged = false;
         this.birthtime = new Date().getTime();
@@ -49,7 +50,7 @@ var Actor = (function () {
         return this.opacity;
     };
     Actor.prototype.getX = function () {
-        return this.x;
+        return this.location.x - this.origin.x * this.getWidth();
     };
     Actor.prototype.setX = function (x, percent, originAtCenter) {
         if (percent === void 0) { percent = false; }
@@ -60,7 +61,7 @@ var Actor = (function () {
         if (originAtCenter) {
             x -= this.getWidth() / 2;
         }
-        this.x = x;
+        this.location.x = x;
     };
     Actor.prototype.setRotation = function (radians) {
         this.rotation = radians;
@@ -69,7 +70,7 @@ var Actor = (function () {
         return this.rotation;
     };
     Actor.prototype.getY = function () {
-        return this.y;
+        return this.location.y - this.origin.y * this.getHeight();
     };
     Actor.prototype.setY = function (y, percent, originAtCenter) {
         if (percent === void 0) { percent = false; }
@@ -80,7 +81,7 @@ var Actor = (function () {
         if (originAtCenter) {
             y -= this.getHeight() / 2;
         }
-        this.y = y;
+        this.location.y = y;
     };
     Actor.prototype.getWidth = function () {
         return this.image.width;
@@ -101,38 +102,41 @@ var Actor = (function () {
     Actor.prototype.isAtEdge = function (includeWidthAndHeight) {
         if (includeWidthAndHeight === void 0) { includeWidthAndHeight = true; }
         if (includeWidthAndHeight) {
-            return (this.x <= 0 || this.x + this.getWidth() >= this.world.getWidth() ||
-                this.y <= 0 || this.y + this.getHeight() >= this.world.getHeight());
+            return (this.getX() <= 0 || this.getX() + this.getWidth() >= this.world.getWidth() ||
+                this.getY() <= 0 || this.getY() + this.getHeight() >= this.world.getHeight());
         }
         else {
-            return (this.x <= 0 || this.x >= this.world.getWidth() ||
-                this.y <= 0 || this.y >= this.world.getHeight());
+            return (this.getX() <= 0 || this.getX() >= this.world.getWidth() ||
+                this.getY() <= 0 || this.getY() >= this.world.getHeight());
         }
     };
     Actor.prototype.getEdge = function (includeWidthAndHeight) {
         if (includeWidthAndHeight === void 0) { includeWidthAndHeight = true; }
         if (includeWidthAndHeight) {
-            if (this.x <= 0)
+            if (this.getX() <= 0)
                 return Edges.Left;
-            if (this.y <= 0)
+            if (this.getY() <= 0)
                 return Edges.Top;
-            if (this.x + this.getWidth() >= this.world.getWidth())
+            if (this.getX() + this.getWidth() >= this.world.getWidth())
                 return Edges.Right;
-            if (this.y + this.getHeight() >= this.world.getHeight())
+            if (this.getY() + this.getHeight() >= this.world.getHeight())
                 return Edges.Bottom;
             return Edges.NoEdge;
         }
         else {
-            if (this.x <= 0)
+            if (this.getX() <= 0)
                 return Edges.Left;
-            if (this.y <= 0)
+            if (this.getY() <= 0)
                 return Edges.Top;
-            if (this.x >= this.world.getWidth())
+            if (this.getX() >= this.world.getWidth())
                 return Edges.Right;
-            if (this.y >= this.world.getHeight())
+            if (this.getY() >= this.world.getHeight())
                 return Edges.Bottom;
             return Edges.NoEdge;
         }
+    };
+    Actor.prototype.setOrigin = function (x, y) {
+        this.origin = new vector_1.Vector(x, y);
     };
     Actor.prototype.setLocation = function (x, y, percent, originAtCenter) {
         if (percent === void 0) { percent = false; }
@@ -150,15 +154,15 @@ var Actor = (function () {
                 var w = this.getWidth();
                 var h = this.getHeight();
                 this.ctx.save();
-                var tX = w / 2 + this.x;
-                var tY = h / 2 + this.y;
+                var tX = w / 2 + this.getX();
+                var tY = h / 2 + this.getY();
                 this.ctx.translate(tX, tY);
                 this.ctx.rotate(this.getRotation());
                 this.ctx.drawImage(this.image, -w / 2, -h / 2, this.image.width, this.image.height);
                 this.ctx.restore();
             }
             else {
-                this.ctx.drawImage(this.image, this.x, this.y, this.image.width, this.image.height);
+                this.ctx.drawImage(this.image, this.getX(), this.getY(), this.image.width, this.image.height);
             }
         }
     };

@@ -49,9 +49,13 @@ export abstract class Actor {
 
     private image: HTMLImageElement = new Image();
     private opacity: number = 1;
-
+/*
     private x: number = 0;
-    private y: number = 0;
+    private y: number = 0;*/
+
+    public location: Vector = new Vector(0, 0);
+    private origin: Vector = new Vector(0, 0);
+
     private rotation: number = 0;
     public isBeingDragged = false;
 
@@ -148,7 +152,7 @@ export abstract class Actor {
      * Get the x position of the actor relative to the world
      */
     public getX() {
-        return this.x;
+        return this.location.x - this.origin.x * this.getWidth();
     }
 
     /**
@@ -163,7 +167,7 @@ export abstract class Actor {
             x -= this.getWidth() / 2;
         }
 
-        this.x = x;
+        this.location.x = x;
     }
 
     /**
@@ -184,7 +188,7 @@ export abstract class Actor {
      * Get the y position of the actor relative to the world
      */
     public getY() {
-        return this.y;
+        return this.location.y - this.origin.y * this.getHeight();
     }
 
     /**
@@ -198,7 +202,7 @@ export abstract class Actor {
             y -= this.getHeight() / 2;
         }
 
-        this.y = y;
+        this.location.y = y;
     }
 
     /**
@@ -244,13 +248,13 @@ export abstract class Actor {
     public isAtEdge(includeWidthAndHeight = true) {
         if (includeWidthAndHeight) {
             return (
-                this.x <= 0 || this.x + this.getWidth() >= this.world.getWidth() ||
-                this.y <= 0 || this.y + this.getHeight() >= this.world.getHeight()
+                this.getX() <= 0 || this.getX() + this.getWidth() >= this.world.getWidth() ||
+                this.getY() <= 0 || this.getY() + this.getHeight() >= this.world.getHeight()
             )
         } else {
             return (
-                this.x <= 0 || this.x >= this.world.getWidth() ||
-                this.y <= 0 || this.y >= this.world.getHeight()
+                this.getX() <= 0 || this.getX() >= this.world.getWidth() ||
+                this.getY() <= 0 || this.getY() >= this.world.getHeight()
             )
         }
 
@@ -258,18 +262,22 @@ export abstract class Actor {
 
     public getEdge(includeWidthAndHeight = true) {
         if (includeWidthAndHeight) {
-            if (this.x <= 0) return Edges.Left;
-            if (this.y <= 0) return Edges.Top;
-            if (this.x + this.getWidth() >= this.world.getWidth()) return Edges.Right;
-            if (this.y + this.getHeight() >= this.world.getHeight()) return Edges.Bottom;
+            if (this.getX() <= 0) return Edges.Left;
+            if (this.getY() <= 0) return Edges.Top;
+            if (this.getX() + this.getWidth() >= this.world.getWidth()) return Edges.Right;
+            if (this.getY() + this.getHeight() >= this.world.getHeight()) return Edges.Bottom;
             return Edges.NoEdge;
         } else {
-            if (this.x <= 0) return Edges.Left;
-            if (this.y <= 0) return Edges.Top;
-            if (this.x >= this.world.getWidth()) return Edges.Right;
-            if (this.y >= this.world.getHeight()) return Edges.Bottom;
+            if (this.getX() <= 0) return Edges.Left;
+            if (this.getY() <= 0) return Edges.Top;
+            if (this.getX() >= this.world.getWidth()) return Edges.Right;
+            if (this.getY() >= this.world.getHeight()) return Edges.Bottom;
             return Edges.NoEdge;
         }
+    }
+
+    public setOrigin(x: number, y: number){
+        this.origin = new Vector(x, y);
     }
 
     /**
@@ -301,8 +309,8 @@ export abstract class Actor {
 
                 // Move origin, rotate Canvas, draw image
                 this.ctx.save();
-                let tX = w / 2 + this.x;
-                let tY = h / 2 + this.y;
+                let tX = w / 2 + this.getX();
+                let tY = h / 2 + this.getY();
 
                 this.ctx.translate(tX, tY);
                 this.ctx.rotate(this.getRotation());
@@ -312,7 +320,7 @@ export abstract class Actor {
                 //Reset translation and rotation of canvas
                 this.ctx.restore();
             } else {
-                this.ctx.drawImage(this.image, this.x, this.y, this.image.width, this.image.height);
+                this.ctx.drawImage(this.image, this.getX(), this.getY(), this.image.width, this.image.height);
             }
 
         }

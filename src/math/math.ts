@@ -194,9 +194,9 @@ export function limit(n: number, bound1: number, bound2?: number) {
         if (n > bound1) {
             return bound1;
         }
-    }else{
-        if(n < bound1) return bound1;
-        if(n > bound2) return bound2;
+    } else {
+        if (n < bound1) return bound1;
+        if (n > bound2) return bound2;
     }
 
     return n;
@@ -204,6 +204,10 @@ export function limit(n: number, bound1: number, bound2?: number) {
 
 export function randomInt(min = 0, max = 1) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function map(n: number, in_min: number, in_max: number, out_min: number, out_max: number) {
+    return (n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 // Helper functions
